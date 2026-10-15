@@ -1,0 +1,48 @@
+{
+  "schema": "smart-gate-os.topology/v1",
+  "description": "Logikai és helyszíni bekötési topológia. Az unverified kapcsolatok nem kivitelezési utasítások.",
+  "eventOrigins": {
+    "physical_switch": "A fali kapcsoló a ZBMINIL2 S1/S2 bemenetét változtatja.",
+    "motion": "A PIR eseményt Zigbee-n az ESP32 kapja, majd az ESP32 automatizálása parancsot küld a ZBMINIL2-nek.",
+    "contact": "A kapunyitásérzékelő saját Zigbee állapotjelentése az ESP32-höz; ez nem mozgásesemény és nem kapcsolja a lámpát.",
+    "mobile": "A telefon Web/API kérése az ESP32-n keresztül Zigbee parancsot küld a ZBMINIL2-nek.",
+    "automation": "Az ESP32 automatizálási szabálya küld parancsot a ZBMINIL2-nek, például PIR esemény után.",
+    "zigbee_button": "A Zigbee kapunyitó gomb eseménye az ESP32 gateway-en keresztül kapunyitási parancsot indít."
+  },
+  "devices": [
+    { "id": "router", "name": "CH7465", "role": "network", "image": "CH7465LG-LC.jpg", "ports": ["ethernet", "wan"] },
+    { "id": "switch", "name": "UniFi Express", "role": "network", "image": "ubiquiti-unifi-express.jpg", "ports": ["wan", "lan", "wlan"] },
+    { "id": "swiss", "name": "Swiss Army Knife Ultra", "role": "network", "image": "ubiquiti-swiss-army-knife-ultra-panel-wifi-antenna.webp", "ports": ["wlan", "ethernet"] },
+    { "id": "network-switch", "name": "USW Flex Mini", "role": "network", "image": "Ubiquiti UniFi Switch Flex Mini.webp", "ports": ["ethernet", "poe"] },
+    { "id": "doorbell", "name": "Reolink Doorbell PoE + Chime", "role": "camera", "image": "D340P_1.webp", "ports": ["poe-ethernet", "wireless-chime"] },
+    { "id": "phone", "name": "Telefon", "role": "client", "ports": ["wifi", "vpn"] },
+    { "id": "api", "name": "Smart Gate OS Web/API", "role": "service", "hostedOn": "gateway", "ports": ["http-api", "websocket"] },
+    { "id": "gateway", "name": "ESP32 gateway board", "role": "zigbee-gateway", "image": "ESP Thread Border Router _  Zigbee Gateway-MB_L_0.png", "ports": ["usb", "wifi", "zigbee"] },
+    { "id": "pir", "name": "Sonoff SNZB-03P", "role": "sensor", "image": "sonoff-snzb-03p-zigbee-motion-sensor.webp", "ports": ["zigbee"], "zigbee": { "shortAddress": "0x738b", "ieeeAddress": "e0:72:91:ff:fe:58:4d:6f", "endpoint": 1, "profileId": "0x0104", "deviceId": "0x0107", "inputClusters": ["0x0000", "0x0001", "0x0003", "0x0020", "0x0406", "0x0500", "0xfc57"], "outputClusters": ["0x0003", "0x0019"], "observed": true } },
+    { "id": "contact", "name": "Sonoff SNZB-04PR2", "role": "sensor", "image": "snzb-4p.jpg", "ports": ["zigbee"] },
+    { "id": "zigbee-button", "name": "Zigbee kapunyitó gomb", "role": "input", "ports": ["zigbee"] },
+    { "id": "light", "name": "Sonoff ZBMINIL2", "role": "actuator", "image": "ZBMINIL2_1.webp", "ports": ["zigbee", "l-in", "l-out", "s1", "s2"], "neutralRequired": false, "zigbee": { "shortAddress": "0xbf3a", "ieeeAddress": "08:dd:eb:ff:fe:10:61:65", "endpoint": 1, "profileId": "0x0104", "deviceId": "0x0002", "inputClusters": ["0x0000", "0x0001", "0x0003", "0x0006", "0x0007", "0x0b05", "0xfc57"], "outputClusters": ["0x0019"], "observed": true } },
+    { "id": "entry-switch", "name": "Bejárati fali kapcsoló", "role": "input", "ports": ["switch-1", "switch-2"] },
+    { "id": "entry-lamp", "name": "Bejárati lámpa", "role": "load", "ports": ["switched-line", "neutral"] },
+    { "id": "gate-relay", "name": "Kapunyitó relé / szárazkontaktus", "role": "isolated-relay", "ports": ["control-in", "dry-contact-out"] },
+    { "id": "gate", "name": "Kapunyitó vezérlő", "role": "gate-controller", "ports": ["status-input", "open-command"] }
+  ],
+  "connections": [
+    { "id": "router-switch", "from": "router", "fromPort": "ethernet", "to": "switch", "toPort": "wan", "protocol": "ethernet", "role": "transport", "direction": "bidirectional", "status": "installed" },
+    { "id": "switch-swiss", "from": "switch", "fromPort": "wlan", "to": "swiss", "toPort": "wlan", "protocol": "Wi-Fi", "role": "transport", "direction": "bidirectional", "status": "installed" },
+    { "id": "swiss-switch", "from": "swiss", "fromPort": "ethernet", "to": "network-switch", "toPort": "ethernet", "protocol": "ethernet", "role": "transport", "direction": "bidirectional", "status": "installed" },
+    { "id": "switch-doorbell", "from": "network-switch", "fromPort": "poe", "to": "doorbell", "toPort": "poe-ethernet", "protocol": "PoE/Ethernet", "role": "transport", "direction": "bidirectional", "status": "planned" },
+    { "id": "phone-api", "from": "phone", "fromPort": "wifi", "to": "api", "toPort": "http-api", "protocol": "Wi-Fi / HTTP(S)", "role": "transport", "direction": "bidirectional", "status": "planned" },
+    { "id": "api-gateway", "from": "api", "fromPort": "websocket", "to": "gateway", "toPort": "wifi", "protocol": "local API / WebSocket", "role": "control", "direction": "to", "triggerSources": ["mobile"], "status": "planned" },
+    { "id": "pir-gateway", "from": "pir", "fromPort": "zigbee", "to": "gateway", "toPort": "zigbee", "protocol": "Zigbee / IEEE 802.15.4", "role": "information", "direction": "to", "triggerSources": ["motion"], "status": "paired", "observed": true },
+    { "id": "contact-gateway", "from": "contact", "fromPort": "zigbee", "to": "gateway", "toPort": "zigbee", "protocol": "Zigbee / IEEE 802.15.4", "role": "information", "direction": "to", "triggerSources": ["contact"], "status": "planned" },
+    { "id": "button-gateway", "from": "zigbee-button", "fromPort": "zigbee", "to": "gateway", "toPort": "zigbee", "protocol": "Zigbee / IEEE 802.15.4", "role": "control", "direction": "to", "status": "planned" },
+    { "id": "gateway-light", "from": "gateway", "fromPort": "zigbee", "to": "light", "toPort": "zigbee", "protocol": "Zigbee command", "role": "control", "direction": "to", "triggerSources": ["mobile", "motion", "automation"], "status": "paired", "observed": true, "cluster": "0x0006" },
+    { "id": "light-gateway", "from": "light", "fromPort": "zigbee", "to": "gateway", "toPort": "zigbee", "protocol": "Zigbee state report", "role": "information", "direction": "to", "triggerSources": ["physical_switch"], "status": "paired", "observed": true, "cluster": "0x0006" },
+    { "id": "gateway-relay", "from": "gateway", "fromPort": "usb", "to": "gate-relay", "toPort": "control-in", "protocol": "GPIO / isolated driver", "role": "control", "direction": "to", "status": "planned" },
+    { "id": "relay-gate", "from": "gate-relay", "fromPort": "dry-contact-out", "to": "gate", "toPort": "open-command", "protocol": "dry contact", "role": "power", "direction": "to", "status": "unverified" },
+    { "id": "switch-light", "from": "entry-switch", "fromPort": "switch-1", "to": "light", "toPort": "s1", "protocol": "site wiring", "role": "control", "direction": "to", "triggerSources": ["physical_switch"], "status": "unverified" },
+    { "id": "light-lamp", "from": "light", "fromPort": "l-out", "to": "entry-lamp", "toPort": "switched-line", "protocol": "site wiring", "role": "power", "direction": "to", "triggerSources": ["physical_switch", "mobile", "automation"], "status": "unverified" }
+  ]
+}
+
