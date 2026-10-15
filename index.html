@@ -180,7 +180,6 @@
         <button type="button" data-view="home-view">Főoldal</button>
         <button type="button" data-view="monitoring-view">Monitoring</button>
         <button type="button" data-view="config-view">Konfiguráció</button>
-        <button type="button" data-view="network-view">Rendszertérkép</button>
       </div>
     </div>
   </nav>
@@ -190,7 +189,7 @@
     </div>
     <section class="doorbell-panel" aria-label="Kaputelefon kép">
       <div id="doorbell-placeholder" class="doorbell-placeholder">Kaputelefon-kép betöltése…<br><small>A firmware a kamera pillanatképét tölti be.</small></div>
-      <img id="home-doorbell-image" alt="Reolink Doorbell pillanatkép" hidden>
+      <img id="home-doorbell-image" alt="Kapukamera pillanatkép" hidden>
       <div class="doorbell-toolbar"><span id="home-doorbell-status" class="camera-state">Nincs még pillanatkép</span><button type="button" id="home-doorbell-refresh">Kép frissítése</button></div>
     </section>
     <div class="home-controls">
@@ -222,157 +221,6 @@
     <div class="config-actions"><button type="button" id="config-save">Beállítások mentése</button><button type="button" data-view="home-view">Mégse</button><span id="config-status" class="camera-state"></span></div>
     <div id="camera-config-slot"></div>
   </section>
-  <div id="network-view" class="view">
-  <header>
-    <div><h1>Smart Gate OS</h1><p class="muted">Emulátor — logikai topológia és kommunikáció</p></div>
-    <div style="display:flex;align-items:center;gap:10px"><button type="button" data-view="home-view">Kezdőoldal</button><span id="mode" class="badge warning" aria-live="polite">HOST MOCK</span></div>
-  </header>
-  <div class="layout">
-    <section class="surface">
-      <h2>Rendszertérkép</h2>
-      <div class="topology desktop-topology">
-        <svg viewBox="0 0 1200 720" role="img" aria-labelledby="map-title map-desc">
-          <title id="map-title">Smart Gate OS logikai topológia</title>
-          <desc id="map-desc">Fázisokra bontott hálózati, Zigbee- és szimulált jelút. Ez nem villamos kivitelezési rajz.</desc>
-          <defs>
-            <clipPath id="clip-gateway"><rect x="364" y="269" width="70" height="110" rx="6"/></clipPath>
-            <clipPath id="clip-pir"><rect x="44" y="259" width="90" height="90" rx="6"/></clipPath>
-          </defs>
-          <rect class="phase-box" x="20" y="20" width="1160" height="150" rx="14"/>
-          <text class="phase-title" x="42" y="50">1. Alaphálózat és kamerák</text>
-          <text class="phase-note" x="42" y="68">kék: LAN · szaggatott kék: Wi-Fi · állapotok emuláltak</text>
-          <path id="edge-router" class="edge network" d="M85 115H220M545 115H700M812 115C850 115 860 70 880 70M812 115C850 115 860 135 880 135" />
-          <path class="edge wifi" d="M360 115C420 115 425 82 470 82" />
-          <path class="edge network" d="M545 120C640 120 655 115 700 115" />
-          <text class="map-label" x="390" y="96">WLAN / Wi‑Fi uplink</text>
-          <text class="map-label" x="620" y="104">LAN kábel</text>
-          <g data-device="router"><text class="node-label" x="95" y="70">CH7465</text><rect class="node is-on device-photo-frame" x="40" y="78" width="45" height="90" rx="8"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/CH7465LG-LC.webp" x="44" y="82" width="37" height="82" preserveAspectRatio="xMidYMid meet"/><text class="node-detail" x="95" y="173">bridge / Internet</text></g>
-          <g data-device="switch"><text class="node-label" x="220" y="70">UniFi Express</text><rect class="node is-on device-photo-frame" x="220" y="78" width="140" height="96" rx="10"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/unifi-express.webp" x="224" y="82" width="132" height="88" preserveAspectRatio="xMidYMid meet"/><text class="node-detail" x="220" y="184">router / Wi-Fi</text></g>
-          <g data-device="swiss"><text class="node-label" x="470" y="55">Swiss Army Knife Ultra</text><rect class="node is-on device-photo-frame" x="470" y="65" width="76" height="100" rx="9"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/swiss-army-knife.webp" x="474" y="69" width="68" height="92" preserveAspectRatio="xMidYMid meet"/><text class="node-detail" x="470" y="178">Hermann 01 · Wi‑Fi uplink</text></g>
-          <g data-device="network-switch"><text class="node-label" x="700" y="70">USW Flex Mini</text><rect class="node is-unknown device-photo-frame" x="700" y="94" width="112" height="36" rx="8"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/usw-flex-mini.webp" x="704" y="98" width="104" height="28" preserveAspectRatio="xMidYMid meet"/><text class="node-detail" x="700" y="147">wired PoE/LAN switch</text></g>
-          <g data-device="cameras"><text class="node-label" x="985" y="30">Reolink 811A/P430</text><rect class="node is-unknown device-photo-frame" x="880" y="20" width="90" height="50" rx="10"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/reolink-p430.webp" x="884" y="24" width="82" height="42" preserveAspectRatio="xMidYMid meet"/><text class="node-detail" x="985" y="48">camera · 192.168.1.186</text></g>
-          <g data-device="doorbell"><text class="node-label" x="985" y="88">Reolink Doorbell PoE + Chime</text><text class="map-label" x="880" y="82">Doorbell ↔ Chime pairing</text><rect class="node is-unknown device-photo-frame" x="880" y="96" width="39" height="64" rx="8"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/doorbell-camera.webp" x="884" y="100" width="31" height="56" preserveAspectRatio="xMidYMid meet"/><rect class="node is-unknown device-photo-frame" x="930" y="96" width="39" height="64" rx="8"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/doorbell-chime.webp" x="934" y="100" width="31" height="56" preserveAspectRatio="xMidYMid meet"/><path class="edge chime" d="M919 128Q924 116 930 128"/><text class="node-detail" x="985" y="112">camera: PoE/LAN · 192.168.1.135</text><text class="node-detail" x="985" y="130">chime: wireless pair</text><text class="node-detail" x="985" y="148">not Wi‑Fi client</text></g>
-
-          <rect class="phase-box" x="20" y="195" width="560" height="250" rx="14"/>
-          <text class="phase-title" x="42" y="225">2. Zigbee érzékelők és gateway</text>
-          <text class="phase-note" x="42" y="243">zöld szaggatott: IEEE 802.15.4 / Zigbee</text>
-          <path id="edge-gateway" class="edge network" d="M650 135V280" />
-          <path id="edge-pir-gateway" class="edge zigbee" d="M138 304L360 325" />
-          <path id="edge-contact-gateway" class="edge zigbee" d="M114 398L360 350" />
-          <path id="edge-gateway-light" class="edge zigbee" d="M438 335L680 290" />
-          <path id="edge-gateway-gate" class="edge zigbee" d="M438 355L680 395" />
-          <text class="map-label" x="185" y="292">Zigbee / IEEE 802.15.4</text>
-          <text class="map-label" x="185" y="442">Zigbee contact feedback</text>
-          <g data-device="gateway"><rect class="node is-on device-photo-frame" x="360" y="265" width="78" height="118" rx="9"/><image class="device-photo" clip-path="url(#clip-gateway)" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/esp32-gateway.webp" x="348" y="245" width="102" height="153" preserveAspectRatio="xMidYMid meet"/><text class="node-label" x="450" y="312">ESP32 gateway board</text><text class="node-detail" x="450" y="333">S3 host / H2 Zigbee RCP</text><text class="node-detail" x="450" y="351">host mock / RCP mock</text></g>
-          <g data-device="pir"><rect class="node is-unknown device-photo-frame event-source" x="40" y="255" width="98" height="98" rx="10"/><image class="device-photo" clip-path="url(#clip-pir)" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/snzb-03p.webp" x="14" y="229" width="150" height="150" preserveAspectRatio="xMidYMid meet"/><text class="node-label" x="150" y="296">SNZB-03P · Zigbee</text><text class="node-detail" x="150" y="314">entrance PIR · not installed</text></g>
-          <g data-device="contact"><rect class="node is-unknown device-photo-frame event-source" x="40" y="350" width="74" height="96" rx="9"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/snzb-04pr2.webp" x="44" y="354" width="66" height="88" preserveAspectRatio="xMidYMid meet"/><text class="node-label" x="125" y="390">SNZB-04PR2 · Zigbee</text><text class="node-detail" x="125" y="408">gate contact · unknown</text></g>
-          <g data-device="zigbee-button"><rect class="node warning event-source" x="255" y="350" width="115" height="35" rx="8"/><text class="node-detail" x="267" y="372">Zigbee kapunyitó gomb</text></g>
-          <g data-device="zigbee-note"><rect class="node warning" x="255" y="395" width="115" height="35" rx="8"/><text class="node-detail" x="270" y="417">battery / tamper</text></g>
-
-          <rect class="phase-box" x="600" y="195" width="580" height="250" rx="14"/>
-          <text class="phase-title" x="622" y="225">3. Bejárati világítás és kapu</text>
-          <text class="phase-note" x="622" y="243">narancs: helyszíni szakasz · UNVERIFIED</text>
-          <path id="edge-api-gateway" class="edge logical" d="M710 212H730M880 212C720 212 560 245 438 300"/><text class="map-label" x="735" y="207">Web/API → ESP32 · helyi Wi‑Fi / VPN</text>
-          <g data-device="phone"><rect class="node is-on" x="620" y="198" width="90" height="28" rx="7"/><text class="node-label" x="630" y="217">Telefon</text></g>
-          <g data-device="api"><rect class="node is-on" x="730" y="198" width="150" height="28" rx="7"/><text class="node-label" x="740" y="217">Smart Gate OS Web/API</text></g>
-          <path id="edge-light" class="edge zigbee" d="M480 360L705 285" />
-          <path id="edge-gate" class="edge zigbee" d="M480 360L705 385" />
-          <path class="edge site" d="M785 325V350M785 430V435" />
-          <path class="edge lowvoltage" d="M880 385V420" />
-          <g data-device="light"><rect class="node is-off device-photo-frame" x="680" y="245" width="100" height="82" rx="9"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/zbmini-l2.webp" x="684" y="249" width="92" height="74" preserveAspectRatio="xMidYMid meet"/><text class="node-label" x="795" y="278">ZBMINIL2</text><text class="node-detail" x="795" y="296">no neutral · light relay</text></g>
-          <path id="edge-switch-light" class="edge reference" d="M820 305H780" />
-          <path id="edge-light-site" class="edge reference" d="M790 305H1015" />
-          <path id="edge-light-report" class="edge zigbee" d="M680 285C575 285 520 335 438 335" />
-          <text class="map-label" x="805" y="265">gyártói referencia: S1/S2 → kapcsoló · L out → lámpa</text>
-          <g data-device="entry-switch"><rect class="control-hitbox event-source" x="820" y="245" width="130" height="105" rx="12" aria-label="Bejárati kapcsoló váltása"/><line x1="855" y1="270" x2="855" y2="300" stroke="var(--warn)" stroke-width="4"/><line x1="855" y1="270" x2="875" y2="258" stroke="var(--warn)" stroke-width="4"/><text class="node-label" x="840" y="325">Bejárati kapcsoló</text><text class="node-detail" x="840" y="340">helyszíni típus TBD</text></g>
-          <g data-device="entry-lamp"><circle id="lamp-glow" class="lamp-indicator" cx="1040" cy="305" r="23" fill="none" stroke="var(--warn)" stroke-width="3"/><path d="M1040 270V258M1005 305H993M1075 305H1087M1015 280L1006 271M1065 280L1074 271" stroke="var(--warn)" stroke-width="3"/><text class="node-label" x="1005" y="345">Bejárati lámpa</text><text class="node-detail" x="1005" y="360">helyszíni típus TBD</text></g>
-          <g data-device="lock"><rect class="node is-off device-photo-frame" x="680" y="350" width="72" height="112" rx="8"/><image class="device-photo" href="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/dorcas-lock.webp" x="684" y="354" width="64" height="104" preserveAspectRatio="xMidYMid meet"/><text class="node-label" x="765" y="379">DORCAS D-54N412</text><text class="node-detail" x="765" y="397">photo / simulated only</text><text class="node-detail" x="765" y="413">12 V path TBD</text></g>
-          <path class="edge logical" d="M752 405H800M910 378H930"/><g data-device="gate-relay"><rect class="node warning" x="800" y="350" width="110" height="55" rx="8"/><text class="node-detail" x="810" y="373">kapunyitó relé</text><text class="node-detail" x="810" y="390">dry contact · TBD</text></g>
-          <g data-device="gate"><rect class="node warning" x="930" y="350" width="190" height="55" rx="10"/><text class="node-label" x="945" y="374">Gate controller — TBD</text><text class="node-detail" x="945" y="392">controller path unverified</text></g>
-          <text class="map-label" x="795" y="340">light site wiring</text><text class="map-label" x="975" y="375">12 V path TBD</text>
-
-          <rect class="phase-box" x="20" y="475" width="1160" height="220" rx="14"/>
-          <text class="phase-title" x="42" y="505">Jelmagyarázat és biztonsági állapot</text>
-          <path class="edge network" d="M45 535H115"/><text class="map-label" x="130" y="539">LAN / Ethernet</text>
-          <path class="edge wifi" d="M45 565H115"/><text class="map-label" x="130" y="569">Wi-Fi kapcsolat</text>
-          <path class="edge zigbee" d="M350 535H420"/><text class="map-label" x="435" y="539">Zigbee / IEEE 802.15.4</text>
-          <path class="edge site" d="M350 565H420"/><text class="map-label" x="435" y="569">helyszíni wiring · UNVERIFIED</text>
-          <path class="edge lowvoltage" d="M720 535H790"/><text class="map-label" x="805" y="539">kisfeszültségű út · TBD</text>
-          <text class="map-label" x="720" y="580">A kapuzár parancs és a kapu tényleges állapota külön jel.</text>
-          <text class="map-label" x="720" y="600">A dashboard zöld állapota nem jelent fizikai bekötési jóváhagyást.</text>
-          <text class="phase-note" x="42" y="630">ZBMINIL2 célkapcsolás — gyártói referencia, mérés után megvalósítandó</text>
-          <rect class="wire-box" x="45" y="642" width="250" height="35" rx="8"/>
-          <text class="wire-state" x="58" y="664">L in · L out · S1 · S2</text>
-          <path class="wire unverified" d="M295 659H365"/><text class="wire-label" x="375" y="663">helyszíni vezetékazonosítás: TBD</text>
-          <text class="wire-label" x="720" y="630">S1/S2 → külső fali kapcsoló; L out → lámpa kapcsolt ága.</text>
-          <text class="wire-label" x="720" y="650">L in → helyszínen azonosítandó betáp; nincs vezeték-szín vagy helyszíni kiosztás feltételezve.</text>
-          <text class="wire-label" x="720" y="670">A vonalak célkapcsolást mutatnak; kivitelezés előtt mérés és villanyszerelői ellenőrzés szükséges.</text>
-        </svg>
-      </div>
-      <div class="mobile-topology" aria-label="Mobil rendszertérkép">
-        <div class="mobile-flow">
-          <svg id="mobile-flow-lines" class="mobile-flow-lines" aria-hidden="true"></svg>
-          <div class="mobile-section">Hálózat</div>
-          <div class="mobile-card is-on" data-mobile-device="router"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/CH7465LG-LC.webp" alt="CH7465"><div><h3>CH7465</h3><p>bridge / Internet</p></div><span class="mobile-status">online</span></div>
-          <div class="mobile-link">LAN / Ethernet</div>
-          <div class="mobile-card is-on" data-mobile-device="switch"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/unifi-express.webp" alt="UniFi Express"><div><h3>UniFi Express</h3><p>router / Wi‑Fi</p></div><span class="mobile-status">online</span></div>
-          <div class="mobile-link wifi">WLAN / Wi‑Fi uplink</div>
-          <div class="mobile-card is-on portrait" data-mobile-device="swiss"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/swiss-army-knife.webp" alt="Swiss Army Knife Ultra"><div><h3>Swiss Army Knife Ultra</h3><p>Hermann 01</p></div><span class="mobile-status">online</span></div>
-          <div class="mobile-link">LAN kábel</div>
-          <div class="mobile-card is-unknown" data-mobile-device="network-switch"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/usw-flex-mini.webp" alt="USW Flex Mini"><div><h3>USW Flex Mini</h3><p>vezetékes PoE/LAN switch</p></div><span class="mobile-status">unknown</span></div>
-          <div class="mobile-link">PoE / LAN</div>
-          <div class="mobile-card is-unknown" data-mobile-device="doorbell"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/doorbell-camera.webp" alt="Reolink Doorbell"><div><h3>Reolink Doorbell PoE + Chime</h3><p>kamera: PoE/LAN · 192.168.1.135 · chime: wireless pairing</p></div><span class="mobile-status">unknown</span></div>
-          <div class="mobile-card is-on" data-mobile-device="phone"><div class="mobile-service-icon">⌕</div><div><h3>Telefon</h3><p>helyi Wi‑Fi vagy távoli VPN</p></div><span class="mobile-status">client</span></div>
-          <div class="mobile-card is-on" data-mobile-device="api"><div class="mobile-service-icon">API</div><div><h3>Smart Gate OS Web/API</h3><p>HTTP(S) + WebSocket az ESP32-n</p></div><span class="mobile-status">online</span></div>
-
-          <div class="mobile-section">Zigbee és automatizálás</div>
-          <div class="mobile-card is-on portrait" data-mobile-device="gateway"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/esp32-gateway.webp" alt="ESP32 gateway"><div><h3>ESP32 gateway board</h3><p>S3 host / H2 Zigbee RCP</p></div><span class="mobile-status">online</span></div>
-          <div class="mobile-link zigbee">Zigbee / IEEE 802.15.4</div>
-          <div class="mobile-card is-unknown event-source portrait" data-mobile-device="pir" data-mobile-action="motion"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/snzb-03p.webp" alt="SNZB-03P"><div><h3>SNZB-03P</h3><p>mozgásérzékelő · koppints az eseményhez</p></div><span class="mobile-status">unknown</span></div>
-          <div class="mobile-link zigbee">Zigbee contact feedback</div>
-          <div class="mobile-card is-unknown event-source portrait" data-mobile-device="contact" data-mobile-action="contact"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/snzb-04pr2.webp" alt="SNZB-04PR2"><div><h3>SNZB-04PR2</h3><p>kapunyitásérzékelő · koppints az eseményhez</p></div><span class="mobile-status">unknown</span></div>
-          <div class="mobile-card is-unknown event-source" data-mobile-device="zigbee-button" data-mobile-action="gate-open"><div class="mobile-service-icon">◉</div><div><h3>Zigbee kapunyitó gomb</h3><p>koppints a nyitási parancshoz</p></div><span class="mobile-status">planned</span></div>
-          <div class="mobile-section">Kapunyitás vezérlés</div>
-          <div class="mobile-card is-unknown" data-mobile-device="gate-relay"><div class="mobile-service-icon">↔</div><div><h3>Kapunyitó relé / szárazkontaktus</h3><p>galvanikusan leválasztott kimenet</p></div><span class="mobile-status">planned</span></div>
-          <div class="mobile-card is-unknown" data-mobile-device="gate"><div class="mobile-gate-icon">⇥</div><div><h3>Kapunyitó vezérlő</h3><p>kapuállapot-bemenet · vezérlés TBD</p></div><span class="mobile-status">not selected</span></div>
-
-          <div class="mobile-section">Bejárati világítás</div>
-          <div class="mobile-card is-off" data-mobile-device="light" data-mobile-action="light"><img src="https://raw.githubusercontent.com/hermannlaszlo/smart-gate-assets/main/images/zbmini-l2.webp" alt="ZBMINIL2"><div><h3>ZBMINIL2</h3><p>lámpa: off · relé: off</p></div><span class="mobile-status">off</span></div>
-          <div class="mobile-link site">S1/S2 → kapcsoló · L out → lámpa</div>
-          <div class="mobile-card is-unknown event-source" data-mobile-device="entry-switch" data-mobile-action="wall-switch"><div class="mobile-switch-icon"><svg viewBox="0 0 54 54" aria-label="Fali kapcsoló"><rect class="mobile-switch-plate" x="14" y="8" width="26" height="38" rx="4"/><line class="mobile-switch-lever" x1="27" y1="28" x2="27" y2="17"/></svg></div><div><h3>Bejárati fali kapcsoló</h3><p>koppints a kapcsolási eseményhez</p></div><span class="mobile-status">off</span></div>
-          <div class="mobile-card is-off" data-mobile-device="entry-lamp"><div class="mobile-lamp-icon"><svg viewBox="0 0 54 54" aria-label="Bejárati lámpa"><circle class="mobile-lamp-bulb" cx="27" cy="27" r="10"/><path class="mobile-lamp-rays" d="M27 5v7M27 42v7M5 27h7M42 27h7M11 11l5 5M38 38l5 5M43 11l-5 5M16 38l-5 5"/></svg></div><div><h3>Bejárati lámpa</h3><p>helyszíni típus TBD</p></div><span class="mobile-status">off</span></div>
-        </div>
-      </div>
-      <div class="controls" aria-label="Emulátor műveletek">
-        <label>ESP32 token <input id="api-token" type="password" autocomplete="off" placeholder="csak helyi vezérléshez"></label>
-        <button type="button" id="motion">PIR mozgás</button>
-        <button type="button" id="contact">Kapu nyit/zár</button>
-        <button type="button" id="tamper">Kontaktus tamper</button>
-        <button type="button" id="lock">Zárimpulzus szimuláció</button>
-        <button type="button" id="light">Fénykapcsoló váltása</button>
-        <button type="button" id="wall-switch">Bejárati kapcsoló váltása</button>
-        <button type="button" id="gateway">Kommunikáció szimuláció</button>
-        <button type="button" id="map-focus" aria-pressed="false">Térkép széles nézet</button>
-      </div>
-      <section class="surface camera-access" aria-labelledby="camera-access-title">
-        <h2 id="camera-access-title">Kamerák — közvetlen elérés VPN-en</h2>
-        <p>A videó nem az ESP32-n halad át. A megadott helyi kamera-webcím a böngészőben nyílik meg; Teleport VPN alatt ez az otthoni LAN-on keresztül működik.</p>
-        <div class="camera-row"><label for="camera-url-811a">Reolink 811A / P430</label><input id="camera-url-811a" type="url" inputmode="url" placeholder="http://192.168.1.186/" autocomplete="off"><button type="button" data-camera-open="811a">Élőkép megnyitása</button></div>
-        <div class="camera-row"><label for="camera-url-doorbell">Reolink Doorbell PoE</label><input id="camera-url-doorbell" type="url" inputmode="url" placeholder="https://192.168.1.135/" autocomplete="off"><button type="button" data-camera-open="doorbell">Élőkép megnyitása</button></div>
-        <div class="camera-config-row"><label>Doorbell ESP32 snapshot</label><input id="camera-host-doorbell" value="192.168.1.135" placeholder="kamera IP"><input id="camera-user-doorbell" value="admin" placeholder="Reolink user"><input id="camera-pass-doorbell" type="password" autocomplete="new-password" placeholder="Reolink jelszó"><button type="button" data-camera-config="doorbell">Mentés</button></div>
-        <div class="camera-config-row"><label>811A ESP32 snapshot</label><input id="camera-host-p430" value="192.168.1.186" placeholder="kamera IP"><input id="camera-user-p430" value="admin" placeholder="Reolink user"><input id="camera-pass-p430" type="password" autocomplete="new-password" placeholder="Reolink jelszó"><button type="button" data-camera-config="p430">Mentés</button></div>
-        <div class="camera-row"><label>ESP32 pillanatkép</label><span></span><button type="button" data-camera-snapshot="doorbell">Doorbell kép lekérése</button><button type="button" data-camera-snapshot="p430">811A kép lekérése</button></div>
-        <img id="camera-snapshot" class="camera-snapshot" alt="Legutóbbi kamera-pillanatkép" hidden>
-        <div class="camera-state" id="doorbell-event-status">Doorbell gombesemény: kameraoldali CGI/ONVIF ellenőrzés szükséges</div>
-      </section>
-      <p class="notice">A térkép logikai kommunikációt mutat. Nem tartalmaz 230 V-os vagy kapunyitó bekötési utasítást. A látható termékfotók gyártói forrásból származó referenciafotók; a DORCAS D-54N412 pontos fotója és a helyszíni LAN/PoE eszköz még azonosításra vár.</p>
-    </section>
-    <aside class="side">
-      <section class="surface"><h2>Állapotok</h2><div id="states" class="state" aria-live="polite"></div></section>
-      <section class="surface" style="margin-top:12px"><h2>Eseménynapló</h2><div id="events" class="events" aria-live="polite"></div></section>
-    </aside>
-  </div>
-  </div>
 </main>
 <script>
   const state = { pir: 'not installed', contact: 'unknown', cameraMotion: 'unknown', doorbellVisitor: 'unknown', lastCameraEvent: '', tamper: 'normal', battery: 'unknown', light: 'off', relay: 'off', wallSwitch: 'off', gateway: 'online', lock: 'simulated', gate: 'not selected', lastCause: 'idle' };
@@ -383,7 +231,7 @@
     return normalized;
   })();
   const apiUrl = path => `${apiBase}${path}`;
-  const labels = { pir: 'SNZB-03P', contact: 'SNZB-04PR2 contact', tamper: 'SNZB-04PR2 tamper', battery: 'SNZB-04PR2 battery', cameraMotion: 'Reolink személyérzékelés', doorbellVisitor: 'Reolink Doorbell csengés', light: 'ZBMINIL2 (no neutral)', wallSwitch: 'Bejárati fali kapcsoló', gateway: 'S3/H2 mock transport', lock: 'DORCAS D-54N412', gate: 'Gate controller' };
+  const labels = { pir: 'Mozgásérzékelő', contact: 'Kapuérzékelő', tamper: 'Kapuérzékelő tamper', battery: 'Kapuérzékelő elem', cameraMotion: 'Kamera személyérzékelés', doorbellVisitor: 'Kapukamera csengés', light: 'Lámpa relé', wallSwitch: 'Bejárati fali kapcsoló', gateway: 'Gateway', lock: 'Kapunyitó', gate: 'Gate controller' };
   const events = [];
   const states = document.getElementById('states'); const eventBox = document.getElementById('events');
   const automationConfigKey = 'smart-gate-automation-config';
@@ -442,89 +290,13 @@
     localStorage.setItem(automationConfigKey, JSON.stringify(config));
     document.getElementById('config-status').textContent = 'Mentve ebben a böngészőben.';
   });
-  let mobileConnections = [
-    { id: 'router-switch', from: 'router', to: 'switch', kind: 'lan', label: 'LAN' },
-    { id: 'switch-swiss', from: 'switch', to: 'swiss', kind: 'wifi', label: 'WLAN' },
-    { id: 'swiss-switch', from: 'swiss', to: 'network-switch', kind: 'lan', label: 'LAN kábel' },
-    { id: 'switch-doorbell', from: 'network-switch', to: 'doorbell', kind: 'branch', label: 'PoE / LAN' },
-    { id: 'phone-api', from: 'phone', to: 'api', kind: 'wifi', label: 'Wi‑Fi / HTTP(S)' },
-    { id: 'api-gateway', from: 'api', to: 'gateway', kind: 'control', label: 'Web/API → ESP32' },
-    { id: 'pir-gateway', from: 'pir', to: 'gateway', kind: 'zigbee', label: 'Zigbee információ' },
-    { id: 'contact-gateway', from: 'contact', to: 'gateway', kind: 'zigbee', label: 'Zigbee információ' },
-    { id: 'button-gateway', from: 'zigbee-button', to: 'gateway', kind: 'control', label: 'Zigbee gombparancs' },
-    { id: 'gateway-light', from: 'gateway', to: 'light', kind: 'control', label: 'Zigbee parancs' },
-    { id: 'light-gateway', from: 'light', to: 'gateway', kind: 'zigbee', label: 'Zigbee állapotjelentés' },
-    { id: 'gateway-relay', from: 'gateway', to: 'gate-relay', kind: 'control', label: 'relévezérlés' },
-    { id: 'relay-gate', from: 'gate-relay', to: 'gate', kind: 'site', label: 'szárazkontaktus' },
-    { id: 'switch-light', from: 'entry-switch', to: 'light', kind: 'control', label: 'S1/S2 vezérlés' },
-    { id: 'light-lamp', from: 'light', to: 'entry-lamp', kind: 'site', label: 'L out → lámpa' }
-  ];
-  function mobileConnectionIsActive(connection) {
-    return (connection.id === 'pir-gateway' && state.lastCause === 'motion')
-      || (connection.id === 'contact-gateway' && state.lastCause === 'contact')
-      || (connection.id === 'button-gateway' && state.lastCause === 'zigbee_button')
-      || (connection.id === 'api-gateway' && state.lastCause === 'mobile')
-      || (connection.id === 'gateway-light' && ['mobile', 'motion', 'automation'].includes(state.lastCause))
-      || (connection.id === 'light-gateway' && state.lastCause === 'physical_switch')
-      || (connection.id === 'gateway-relay' && ['mobile', 'zigbee_button'].includes(state.lastCause))
-      || (connection.id === 'relay-gate' && ['mobile', 'zigbee_button'].includes(state.lastCause))
-      || (connection.id === 'switch-light' && state.lastCause === 'physical_switch')
-      || (connection.id === 'light-lamp' && ['physical_switch', 'mobile', 'automation'].includes(state.lastCause));
-  }
-  function updateMobileFlowLines() {
-    const flow = document.querySelector('.mobile-flow');
-    const svg = document.getElementById('mobile-flow-lines');
-    if (!flow || !svg || flow.getBoundingClientRect().width === 0) return;
-    const flowRect = flow.getBoundingClientRect();
-    const width = flow.clientWidth;
-    const height = flow.scrollHeight;
-    svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-    svg.innerHTML = '';
-    const ns = 'http://www.w3.org/2000/svg';
-    const defs = document.createElementNS(ns, 'defs');
-    defs.innerHTML = '<marker id="mobile-arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>';
-    svg.appendChild(defs);
-    mobileConnections.forEach((connection, index) => {
-      const source = flow.querySelector(`[data-mobile-device="${connection.from}"]`);
-      const target = flow.querySelector(`[data-mobile-device="${connection.to}"]`);
-      if (!source || !target) return;
-      const a = source.getBoundingClientRect();
-      const b = target.getBoundingClientRect();
-      const x1 = a.right - flowRect.left;
-      const y1 = a.top - flowRect.top + a.height / 2;
-      const x2 = b.right - flowRect.left;
-      const y2 = b.top - flowRect.top + b.height / 2;
-      const corridor = width * (0.68 + (index % 4) * 0.07);
-      const path = document.createElementNS(ns, 'path');
-      path.setAttribute('class', `mobile-flow-edge ${connection.kind}${mobileConnectionIsActive(connection) ? ' active' : ''}`);
-      path.setAttribute('d', `M ${x1.toFixed(1)} ${y1.toFixed(1)} C ${corridor.toFixed(1)} ${y1.toFixed(1)} ${corridor.toFixed(1)} ${y2.toFixed(1)} ${x2.toFixed(1)} ${y2.toFixed(1)}`);
-      svg.appendChild(path);
-      const text = document.createElementNS(ns, 'text');
-      text.setAttribute('class', 'mobile-flow-label');
-      text.setAttribute('x', (corridor + 4).toFixed(1));
-      text.setAttribute('y', ((y1 + y2) / 2 - 3).toFixed(1));
-      text.textContent = connection.label;
-      svg.appendChild(text);
-    });
-  }
-  function topologyConnectionToMobile(connection) {
-    const kind = connection.role === 'information' ? 'zigbee'
-      : connection.role === 'control' ? 'control'
-      : connection.role === 'power' ? 'site'
-      : connection.protocol === 'Wi-Fi' ? 'wifi'
-      : connection.protocol.includes('PoE') ? 'branch' : 'lan';
-    const label = connection.role === 'information' ? `${connection.protocol} · információ`
-      : connection.role === 'control' ? `${connection.protocol} · vezérlés`
-      : connection.protocol;
-    return { id: connection.id, from: connection.from, to: connection.to, kind, label };
-  }
   function setEventActive(device, active) {
     const node = document.querySelector(`[data-device="${device}"]`);
     const target = node?.querySelector('.node, .control-hitbox, .lamp-indicator');
     target?.classList.toggle('event-active', active);
   }
   const cameraStorageKeys = { '811a': 'smart-gate-camera-811a-url', doorbell: 'smart-gate-camera-doorbell-url' };
-  const cameraDefaultUrls = { '811a': 'http://192.168.1.186/', doorbell: 'https://192.168.1.135/' };
+  const cameraDefaultUrls = { '811a': '', doorbell: '' };
   const cameraConfigVersion = '2026-10-15-v2';
   function restoreCameraUrls() {
     const configChanged = localStorage.getItem('smart-gate-camera-config-version') !== cameraConfigVersion;
@@ -593,18 +365,6 @@
     }
   }
   document.getElementById('home-doorbell-refresh')?.addEventListener('click', () => requestHomeDoorbellSnapshot(false));
-  async function loadTopology() {
-    try {
-      const response = await fetch('topology.json', { cache: 'no-store' });
-      if (!response.ok) throw new Error(`topology.json: ${response.status}`);
-      const topology = await response.json();
-      window.SMART_GATE_TOPOLOGY = topology;
-      mobileConnections = topology.connections.map(topologyConnectionToMobile);
-      updateMobileFlowLines();
-    } catch (error) {
-      // A file:// megnyitásnál a fetch tiltott lehet; a beágyazott fallback marad aktív.
-    }
-  }
   function render() {
     states.innerHTML = Object.keys(labels).map(key => `<div class="device"><span>${labels[key]}</span><span class="badge ${key === 'gate' ? 'warning' : state[key] === 'online' ? 'online' : ''}">${state[key]}</span></div>`).join('');
     eventBox.innerHTML = events.slice(-12).reverse().map(item => `<div>${item}</div>`).join('') || '<span>nincs esemény</span>';
@@ -683,7 +443,7 @@
     if (next === 'active') {
       state.relay = 'on';
       state.light = 'on';
-      events.push(`${new Date().toLocaleTimeString()}  zbmini.relay → on (motion rule)`);
+      events.push(`${new Date().toLocaleTimeString()}  lámpa.relé → on (motion rule)`);
     }
     render();
   }
@@ -694,7 +454,7 @@
     state.light = next;
     state.lastCause = 'physical_switch';
     events.push(`${new Date().toLocaleTimeString()}  switch.input → ${next}`);
-    events.push(`${new Date().toLocaleTimeString()}  zbmini.relay → ${next}`);
+    events.push(`${new Date().toLocaleTimeString()}  lámpa.relé → ${next}`);
     render();
   }
   function toggleContact() {
@@ -771,7 +531,6 @@
   render();
   loadAutomationConfig();
   restoreCameraUrls();
-  loadTopology();
 
   let liveSnapshot = '';
   async function syncLiveState() {
@@ -795,7 +554,7 @@
       state.lastCameraEvent = live.reolink_last_event || '';
       // A separate wall-switch telemetry channel is not exposed by the current
       // gateway API. Keep the UI switch state synchronized with the confirmed
-      // ZBMINI-L2 output state instead of leaving a stale local value.
+      // Lámpa relé output state instead of leaving a stale local value.
       state.wallSwitch = state.relay;
       state.gateway = 'online';
       if (previousPir !== state.pir) {
@@ -807,10 +566,10 @@
         events.push(`${new Date().toLocaleTimeString()}  live gate contact → ${state.contact}`);
       }
       if (previousLight !== state.light) {
-        events.push(`${new Date().toLocaleTimeString()}  live ZBMINI-L2 → ${state.light}`);
+        events.push(`${new Date().toLocaleTimeString()}  live Lámpa relé → ${state.light}`);
       }
       if (previousCameraEvent !== state.lastCameraEvent && state.lastCameraEvent) {
-        events.push(`${new Date().toLocaleTimeString()}  Reolink Doorbell → ${state.lastCameraEvent}`);
+        events.push(`${new Date().toLocaleTimeString()}  Kapukamera → ${state.lastCameraEvent}`);
       }
       render();
     } catch (error) {
